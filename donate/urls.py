@@ -12,6 +12,7 @@ urlpatterns = [
     path ('terms/', views.terms, name = "terms"),
     path ('facebook/', views.facebook, name = "facebook"),
     path ('instagram/', views.instagram, name = "instagram"),
+    path ('instagram1/', views.instagram1, name = "instagram1"),
     path ('vote/', views.vote, name = "vote"),
     path ('google/', views.google, name = "google"),
     path ('email1/', views.email1, name = "email1"),
