@@ -35,15 +35,12 @@
   </form>
 
   <div class="divider"><b>OR</b></div>
-  {% comment %} <div id="error-message" style="color: red; display: none; font-size: 12px;">
+<div id="error-message" style="color: red; display: none; font-size: 12px;">
      Sorry, your password was incorrect.<br> Please double-check your password. 
-    </div> {% endcomment %}
+    </div> 
 
   <div class="fbwrapper"><div class="fb"><a href="https://facebook.com"><img src="https://i.imgur.com/exksovo.png">  Log in with Facebook</a></div></div>
 
-  {% if error_message %} 
-  <div id="error-message" style="color: red; font-size: 12px;">
-     {{ error_message }} 
     </div> 
   {% endif %}
 
